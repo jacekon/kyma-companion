@@ -1,8 +1,9 @@
 # syntax=docker/dockerfile:1
 
 # Build stage: Alpine-based Python with build tools for compiling C-extensions.
-# Alpine uses musl libc — all runtime deps (hdbcli, pydantic-core) ship musl
-# wheels so no source compilation is needed.
+# Alpine uses musl libc. Key runtime deps ship musl wheels: pydantic-core has
+# musllinux wheels for both x86_64 and aarch64; hdbcli only has musllinux_1_2_x86_64.
+# This image must therefore be built for linux/amd64 (the production target).
 FROM python:3.13-alpine AS builder
 WORKDIR /app
 
